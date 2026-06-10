@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from services.code_analyzer import analyze_repository
 
 from services.github_service import clone_repository
+from services.dependency_graph import build_dependency_graph
 
 
 router = APIRouter()
@@ -21,7 +22,12 @@ def analyze_repo(request: RepoRequest):
     )
 
 
-    result = analyze_repository(
+    code_analysis = analyze_repository(
+        repo_path
+    )
+
+
+    dependency_graph = build_dependency_graph(
         repo_path
     )
 
@@ -30,6 +36,8 @@ def analyze_repo(request: RepoRequest):
 
         "repo_path": repo_path,
 
-        "analysis": result
+        "code_analysis": code_analysis,
+
+        "dependency_graph": dependency_graph
 
     }
