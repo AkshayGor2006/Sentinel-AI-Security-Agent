@@ -3,9 +3,9 @@ from fastapi import FastAPI
 from routes import repo
 
 
-app = FastAPI()
+app = FastAPI()   #creates ur backend application 
 
 
-app.include_router(
+app.include_router(                         #connects ur api routes
     repo.router
 )
