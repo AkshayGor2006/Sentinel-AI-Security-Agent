@@ -6,7 +6,7 @@ from services.github_service import clone_repository
 from services.dependency_graph import build_dependency_graph
 
 from services.context_engine import select_relevant_files
-
+from agents.manager_agent import manager_agent
 
 router = APIRouter()
 
@@ -46,13 +46,21 @@ def analyze_repo(request:RepoRequest):
         )
     )
 
+    selected_agent = manager_agent(request.query)
+
 
     return {
 
-        "important_files":
-        important_files,
 
-        "analysis":
-        analysis
+    "selected_agent":
+    selected_agent,
+
+
+    "important_files":
+    important_files,
+
+
+    "analysis":
+    analysis
 
     }
