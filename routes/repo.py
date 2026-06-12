@@ -7,6 +7,7 @@ from services.dependency_graph import build_dependency_graph
 
 from services.context_engine import select_relevant_files
 from agents.manager_agent import manager_agent
+from agents.code_explainer_agent import explain_codebase
 
 router = APIRouter()
 
@@ -48,19 +49,26 @@ def analyze_repo(request:RepoRequest):
 
     selected_agent = manager_agent(request.query)
 
+    agent_result = None
+
+
+    if selected_agent["agent"] == "code_explainer_agent":
+
+        agent_result = explain_codebase(
+            analysis
+        )
+
 
     return {
 
-
-    "selected_agent":
-    selected_agent,
-
-
-    "important_files":
-    important_files,
+        "selected_agent":
+        selected_agent,
 
 
-    "analysis":
-    analysis
+        "agent_result":
+        agent_result,
 
+
+        "important_files":
+        important_files
     }
