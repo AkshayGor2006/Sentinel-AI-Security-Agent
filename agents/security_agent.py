@@ -105,10 +105,7 @@ def scan_security(repo_path):
             if file.endswith(".py"):
 
 
-                path = os.path.join(
-                    root,
-                    file
-                )
+                path = os.path.join(root,file)
 
 
                 with open(

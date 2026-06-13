@@ -10,6 +10,10 @@ from agents.manager_agent import manager_agent
 from agents.code_explainer_agent import explain_codebase
 from agents.security_agent import scan_security
 from services.report_generator import generate_security_report
+from services.memory_service import save_scan
+from services.memory_service import get_history
+from agents.progress_agent import compare_scans
+from agents.recommendation_agent import generate_recommendations
 
 router = APIRouter()
 
@@ -72,6 +76,21 @@ def analyze_repo(request:RepoRequest):
         findings
         )
 
+        recommendations = generate_recommendations(
+        agent_result["issues"]
+        )
+
+        save_scan(
+            request.url,
+            agent_result
+        )
+
+        history = get_history()
+
+        progress = compare_scans(
+        history
+        )
+
 
     return {
 
@@ -84,5 +103,11 @@ def analyze_repo(request:RepoRequest):
 
 
         "important_files":
-        important_files
+        important_files,
+
+        "progress":
+        progress,
+
+        "recommendations":
+        recommendations
     }
